@@ -123,4 +123,47 @@ public static void selectActualMascotaImage(String type, String  color, JLabel j
                 jLabel.setIcon(  imageIcon );
             }
 } 
+
+
+            public static void fillJProgressBar(JProgressBar jProgressBar1, int stateActual)
+               {
+                   int i = 0;
+                   try {
+                       while (i <= stateActual) {
+                           // fill the menu bar
+                           jProgressBar1.setValue(i + 10);
+                           i += 20;
+                       }
+                   }
+                   catch (Exception e) {
+
+                   }
+               }
+
+            public static void comer(JProgressBar jProgressBar1,JProgressBar jProgressBar2)
+                           {
+                                    int vida = jProgressBar1.getValue();
+                                         vida = vida + 5;
+                                       jProgressBar1.setValue(vida);
+
+                                    int hambre = jProgressBar2.getValue();
+                                         hambre = hambre + 20;
+                                       jProgressBar2.setValue(hambre);
+                                   
+                                   
+                              
+                           }
+            public static void tomarAgua(JProgressBar jProgressBar1,JProgressBar jProgressBar3)
+                           {
+                                    int vida = jProgressBar1.getValue();
+                                         vida = vida + 2;
+                                       jProgressBar1.setValue(vida);
+
+                                    int sed = jProgressBar3.getValue();
+                                         sed = sed + 20;
+                                       jProgressBar3.setValue(sed);
+                                   
+                                   
+                              
+                           }
 }

@@ -7,8 +7,11 @@ package com.itsx.tamagochi;
 import com.itsx.tamagochi.dao.MascotaDao;
 import com.itsx.tamagochi.dto.Mascota;
 import com.itsx.tamagochi.fomulary.CreateMascota;
+import com.itsx.tamagochi.timers.StatusTimer;
 import com.itsx.tamagochi.utils.Utils;
 import java.util.List;
+import java.util.Timer;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -21,6 +24,10 @@ public class MainProgram extends javax.swing.JFrame {
      */
 
     public int id_usuario;
+           StatusTimer timerVida;
+           StatusTimer timerHambre;
+           StatusTimer timerSed;
+           Timer t;
 
     public MainProgram(int id_usuario) {
         initComponents();
@@ -77,6 +84,7 @@ public class MainProgram extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -156,6 +164,13 @@ public class MainProgram extends javax.swing.JFrame {
             }
         });
 
+        jButton5.setText("Guardar Cambios y Salir");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -185,6 +200,7 @@ public class MainProgram extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -230,7 +246,9 @@ public class MainProgram extends javax.swing.JFrame {
                 .addComponent(jButton1)
                 .addGap(31, 31, 31)
                 .addComponent(jButton4)
-                .addContainerGap(156, Short.MAX_VALUE))
+                .addGap(35, 35, 35)
+                .addComponent(jButton5)
+                .addContainerGap(98, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                     .addContainerGap(567, Short.MAX_VALUE)
@@ -336,7 +354,7 @@ public class MainProgram extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        Utils.tomarAgua(jProgressBar1, jProgressBar3);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -357,7 +375,8 @@ public class MainProgram extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        Utils.comer(jProgressBar1,jProgressBar2);
+       
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
@@ -376,6 +395,29 @@ public class MainProgram extends javax.swing.JFrame {
                      Mascota mascoota = MascotaDao.getMascotaById(seleccionado); 
                      jLabel5.setText( "Nombre: "+mascoota.getName() );
                      Utils.selectActualMascotaImage(mascoota.getClase(),mascoota.getColor(), jLabel2);
+                     Utils.fillJProgressBar(jProgressBar1, 100);
+                     Utils.fillJProgressBar(jProgressBar2, 100);
+                     Utils.fillJProgressBar(jProgressBar3, 100);
+                     Utils.fillJProgressBar(jProgressBar4, 100);
+                     Utils.fillJProgressBar(jProgressBar5, 100);
+                     Utils.fillJProgressBar(jProgressBar6, 100);
+
+                      
+                      if(t != null){
+                                    this.timerVida.cancel();
+                                    this.timerHambre.cancel();
+                                    this.timerSed.cancel();
+                                    this.t.cancel();
+                     }
+                    
+
+                     this.timerVida = new StatusTimer(jProgressBar1, 0);
+                     this.timerHambre = new StatusTimer(jProgressBar2, 0);
+                     this.timerSed = new StatusTimer(jProgressBar3, 0);
+                     this.t = new Timer();
+                     t.schedule(timerVida,0, 30000);
+                     t.schedule(timerHambre, 0, 10000);
+                     t.schedule(timerSed, 0, 40000);
                     jPanel1.setVisible(true);
                     jPanel2.setVisible(true);
                     
@@ -397,12 +439,34 @@ public class MainProgram extends javax.swing.JFrame {
         }else{
            jLabel10.setVisible(true);
            jComboBox1.setVisible(true);
+              
               jComboBox1.addItem("Seleccione");
          for (Mascota mascota : mascotas) {
               jComboBox1.addItem(mascota.getName());
         }
        } 
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+      int response = JOptionPane.showConfirmDialog(null, "Estas por guardar el progreso de tu mascotas, ¿Estás seguro que deseas salir y guardar tu progreso?");
+         
+        switch (response) {
+            case 0:
+                   if(t != null){
+                                    this.timerVida.cancel();
+                                    this.timerHambre.cancel();
+                                    this.timerSed.cancel();
+                                    this.t.cancel();
+                     }
+                    this.dispose();
+                break;
+            case 2:
+                break;
+            default:
+                break;
+        }
+
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -444,6 +508,7 @@ public class MainProgram extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
