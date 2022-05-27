@@ -42,7 +42,7 @@ public class UsuarioDao {
                 
 }
 
- public static UsuarioDto getUsuario(UsuarioDto usuario){
+    public static UsuarioDto getUsuario(UsuarioDto usuario){
                Connection con = UtilDao.getConnection();
         try {
            Statement stmt = con.createStatement();

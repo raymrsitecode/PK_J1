@@ -130,7 +130,7 @@ public class Login extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
            
             
-      UsuarioDto usuario = new UsuarioDto();
+              UsuarioDto usuario = new UsuarioDto();
                  usuario.setUser(jTextField1.getText());
                  usuario.setPassword( jPasswordField1.getText());
                  UsuarioDto user = UsuarioDao.getUsuario(usuario);
